@@ -1,0 +1,8 @@
+# A minute on one GPU: checks the batched exact-distance solver and the runner end to end before bigger runs.
+families: [grid_sphere, grid_torus, bumpy_sphere, delaunay_sphere]
+sizes: [32, 64, 128]
+queries: 50
+patches_per_sqrt: 1.0
+corridor_rings: 0
+gpu_truth: true
+seed: 0

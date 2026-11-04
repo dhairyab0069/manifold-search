@@ -1,9 +1,8 @@
-# How does the number of patches trade accuracy against work? One mesh size, k from sqrt(N)/8 to 4 sqrt(N).
+# How does the number of patches trade accuracy against work? k = patches_per_sqrt * sqrt(N), from 1/8 to 4.
 families: [grid_sphere, bumpy_sphere, delaunay_sphere]
 sizes: [256]
 queries: 300
-patches_per_sqrt: 0.125
+patches_per_sqrt: [0.125, 0.25, 0.5, 1.0, 2.0, 4.0]
 corridor_rings: 0
 gpu_truth: true
 seed: 0
-# run again with patches_per_sqrt 0.25, 0.5, 1, 2, 4 (see slurm/submit.sh --sweep)

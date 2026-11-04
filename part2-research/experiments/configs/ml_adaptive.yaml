@@ -1,0 +1,19 @@
+# Direction 1: learn how many rings of neighbouring patches the corridor needs, per query.
+# Train on small grid spheres and tori; test on meshes never seen (other families, and larger sizes).
+queries: 20000              # per mesh (random sources x targets_per_source targets)
+targets_per_source: 10
+patches_per_sqrt: 1.0       # k = sqrt(N)
+train_families: [grid_sphere, grid_torus]
+train_sizes: [32, 64, 128]
+test_families: [bumpy_sphere, delaunay_sphere, grid_sphere, grid_torus]
+test_sizes:
+  bumpy_sphere: [64, 128, 256, 512]
+  delaunay_sphere: [64, 128, 256, 512]
+  grid_sphere: [256, 512]
+  grid_torus: [256, 512]
+tolerances: [1.01, 1.02]
+taus: [0.3, 0.5, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99]
+feature_sets: [base, base+ring0]
+models: [gbt, mlp]
+gbt: {n_estimators: 200, learning_rate: 0.05, num_leaves: 15}
+mlp: {hidden: 64, epochs: 30, lr: 0.002}

@@ -52,7 +52,8 @@ def measure(mesh, cfg: dict, seed: int, device: str) -> dict:
     res = [index.query(int(s), int(t), cfg.get("corridor_rings", 0)) for s, t in q]
     t_hier = (time.perf_counter() - t0) / len(q)
     approx = np.array([r[0] for r in res])
-    row = {"mesh": mesh.name, "N": n, "k": k, "queries": len(q), "preprocess_s": t_pre, "hier_query_s": t_hier,
+    row = {"mesh": mesh.name, "N": n, "k": k, "patches_per_sqrt": cfg.get("patches_per_sqrt", 1.0), "corridor_rings": cfg.get("corridor_rings", 0),
+           "queries": len(q), "preprocess_s": t_pre, "hier_query_s": t_hier,
            "corridor_fraction": float(np.mean([r[1] for r in res]) / n), "stretch": stretch_summary(approx, exact)}
     if cfg.get("effort", False):                           # vertices expanded by Dijkstra and A* (slow in pure Python: small meshes only)
         row["dijkstra_expanded"] = float(np.mean([dijkstra_expanded(graph, int(s), int(t))[1] for s, t in q]))
@@ -74,14 +75,18 @@ def main() -> None:
     out = open(args.out, "a", encoding="utf8") if args.out else None
     if args.out:
         os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+    as_list = lambda v: v if isinstance(v, list) else [v]
     for family in cfg["families"]:
         for n in cfg["sizes"]:
-            row = measure(FAMILIES[family](n, cfg.get("seed", 0)), cfg, cfg.get("seed", 0), device)
-            row["device"] = device
-            line = json.dumps(row)
-            print(line, flush=True)
-            if out:
-                out.write(line + "\n"); out.flush()
+            mesh = FAMILIES[family](n, cfg.get("seed", 0))
+            for ps in as_list(cfg.get("patches_per_sqrt", 1.0)):         # a list sweeps the setting on the same mesh
+                for rings in as_list(cfg.get("corridor_rings", 0)):
+                    row = measure(mesh, {**cfg, "patches_per_sqrt": ps, "corridor_rings": rings}, cfg.get("seed", 0), device)
+                    row["device"] = device
+                    line = json.dumps(row)
+                    print(line, flush=True)
+                    if out:
+                        out.write(line + "\n"); out.flush()
 
 
 if __name__ == "__main__":

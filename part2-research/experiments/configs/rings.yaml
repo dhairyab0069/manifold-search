@@ -3,6 +3,6 @@ families: [grid_sphere, grid_torus, bumpy_sphere, delaunay_sphere]
 sizes: [256]
 queries: 300
 patches_per_sqrt: 1.0
-corridor_rings: 1
+corridor_rings: [0, 1, 2]
 gpu_truth: true
 seed: 0
