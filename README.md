@@ -18,6 +18,7 @@
 ## Contents
 
 - [What it is](#what-it-is)
+- [See it](#see-it)
 - [Where it is today](#where-it-is-today)
 - [The idea in a minute](#the-idea-in-a-minute)
 - [What the runs say so far](#what-the-runs-say-so-far)
@@ -36,6 +37,19 @@ path in the mesh, so it can only be longer than the true shortest path, never sh
 longer, how little of the mesh it has to look at, and what controls the difference.
 
 It began as a CS 5800 (Algorithms) course project, and it is now my own research in computational geometry.
+
+## See it
+
+<p align="center">
+  <img src="docs/gifs/patches.gif" width="340" alt="A sphere mesh turning slowly, its vertices coloured by patch, with the seed point of each patch circled">
+  &nbsp;&nbsp;
+  <img src="docs/gifs/corridor.gif" width="340" alt="One query answered step by step: the exact shortest path, the route over the patches, then the corridor search at zero, one and two rings, with the measured stretch and the share of the mesh searched">
+</p>
+
+*Left:* the surface cut into patches. *Right:* one query from A to B. The exact path (white, dashed) is found by searching
+every vertex; the coarse-to-fine search first routes over the patches (bright), then searches only a corridor around that
+route, and widening the corridor by a ring or two closes the gap. The numbers in the corner are measured by the package on
+this mesh. Both animations are drawn by [`part2-research/scripts/make_readme_gifs.py`](part2-research/scripts/make_readme_gifs.py).
 
 ## Where it is today
 
@@ -130,6 +144,6 @@ learned-corridor configs). Raw datasets stay on the cluster; small summaries are
 | `part2-research/slurm/` | Cluster submission scripts |
 | `part2-research/results_summary/` | Small committed result files and figures |
 | `part2-research/tests/` | The package's tests |
-| `docs/` | One write-up per machine learning direction |
+| `docs/` | One write-up per machine learning direction, and the README animations in `docs/gifs/` |
 
 Dhairya Bhatia, Northeastern University.
