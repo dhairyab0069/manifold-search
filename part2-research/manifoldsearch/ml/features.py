@@ -13,7 +13,7 @@ import numpy as np
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import dijkstra
 
-from ..hierarchical import HierarchicalIndex, build_index
+from ..hierarchical import HierarchicalIndex, build_index, index_from_seeds
 from ..meshes import Mesh
 from .geometry import border_distance, vertex_geometry
 
@@ -52,10 +52,10 @@ class MeshContext:
     scratch: np.ndarray       # (N,) int64 workspace for subgraph remapping
 
 
-def build_context(mesh: Mesh, patches_per_sqrt: float = 1.0, seed: int = 0) -> MeshContext:
+def build_context(mesh: Mesh, patches_per_sqrt: float = 1.0, seed: int = 0, seeds: np.ndarray | None = None) -> MeshContext:
     graph, pts, n = mesh.csr(), mesh.points, mesh.n
     k = max(4, int(round(patches_per_sqrt * math.sqrt(n))))
-    index = build_index(graph, pts, k, seed)
+    index = build_index(graph, pts, k, seed) if seeds is None else index_from_seeds(graph, seeds)
     k = index.k
     vgeo = vertex_geometry(pts, graph)
     po = index.patch_of

@@ -75,7 +75,13 @@ def build_index(graph: csr_matrix, points: np.ndarray, k: int, seed: int = 0) ->
     """Preprocess a mesh into k patches."""
     rng = np.random.default_rng(seed)
     k = max(2, min(k, graph.shape[0]))
-    seeds = farthest_point_seeds(points, k, rng)
+    return index_from_seeds(graph, farthest_point_seeds(points, k, rng))
+
+
+def index_from_seeds(graph: csr_matrix, seeds: np.ndarray) -> HierarchicalIndex:
+    """Preprocess a mesh into patches around the given seed vertices (graph Voronoi partition)."""
+    seeds = np.asarray(seeds)
+    k = len(seeds)
     dist, _, src = _dijkstra(graph, directed=False, indices=seeds, return_predecessors=True, min_only=True)
     order = {int(s): i for i, s in enumerate(seeds)}
     patch_of = np.fromiter((order[int(s)] for s in src), dtype=np.int64, count=graph.shape[0])
