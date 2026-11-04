@@ -51,9 +51,9 @@ def method_h(geo8, geo16, nets, name, s, t, euclid):
     if kind == "euclid":
         return euclid * float(arg or 1)
     lb8 = np.maximum(alt_bounds(geo8.D, t)[0], euclid)
-    if kind == "alt8":
+    if kind == "altL":
         return lb8 * float(arg or 1)
-    if kind == "alt16":
+    if kind == "alt2L":
         return np.maximum(alt_bounds(geo16.D, t)[0], euclid)
     return nets[name].predict(geo8, t)
 
@@ -91,13 +91,13 @@ def main() -> None:
             t0 = time.perf_counter()
             nets[f"learned_{kind}:{ow}"] = HeuristicNet(kind, ow, seed).fit(x, e, lb, ub, y, float(dg[0]), epochs=cfg["epochs"], device=dev)
             fit_s[f"learned_{kind}:{ow}"] = time.perf_counter() - t0
-    methods = ["dijkstra", "euclid"] + [f"euclid:{w}" for w in cfg["weights"]] + ["alt8", "alt16"] + [f"alt8:{w}" for w in cfg["weights"]] + list(nets)
+    methods = ["dijkstra", "euclid"] + [f"euclid:{w}" for w in cfg["weights"]] + ["altL", "alt2L"] + [f"altL:{w}" for w in cfg["weights"]] + list(nets)
     rng = np.random.default_rng(10_000 + seed)
     jobs, meta = [], []
     for mi, (fam, size) in enumerate(cfg["test_meshes"]):
         mesh = FAMILIES[fam](size, seed)
-        graph, geo16 = build_geo(mesh, 16, rng)
-        geo8 = MeshGeo(mesh, {"kn": np.exp(geo16.logkn) - 1e-3}, geo16.D[:8])      # first 8 of the 16 farthest-point landmarks
+        graph, geo16 = build_geo(mesh, 2 * cfg["landmarks"], rng)
+        geo8 = MeshGeo(mesh, {"kn": np.exp(geo16.logkn) - 1e-3}, geo16.D[:cfg["landmarks"]])      # the first L of the 2L farthest-point landmarks
         _STATE[mi] = {"graph": graph, "geo8": geo8, "geo16": geo16, "points": mesh.points, "nets": nets, "methods": methods}
         q = rng.integers(0, mesh.n, (cfg["queries"], 2))
         jobs += [(mi, int(s), int(t)) for s, t in q if s != t]

@@ -1,5 +1,5 @@
 # Direction 3: learned A* heuristic (distance to the target) against straight-line A*, ALT landmarks, weighted A* and Dijkstra.
-# Trained on small grid spheres/tori; tested on meshes the network never saw. Vertices expanded and path suboptimality are measured.
+# L = `landmarks`: altL is ALT with L landmarks, alt2L is ALT with 2L. Trained on small grid spheres/tori; tested on meshes the network never saw. Vertices expanded and path suboptimality are measured.
 train_meshes: [[grid_sphere, 32], [grid_sphere, 48], [grid_torus, 32], [grid_torus, 48], [grid_sphere, 64], [grid_torus, 64]]
 train_targets: 60
 train_vertices_per_target: 3000
