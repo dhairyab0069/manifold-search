@@ -1,0 +1,12 @@
+# Direction 2: does a learned seed scorer beat farthest-point, k-means, spectral and METIS seeds at equal patch count?
+# Scorer weights are fitted by evolution strategy on the training meshes only; every number is on held-out meshes.
+train_meshes: [[grid_sphere, 32], [grid_sphere, 48], [grid_torus, 32], [grid_torus, 48]]
+train_sources: 20
+targets_per_source: 10
+es: {pop: 16, elite: 4, gens: 25, sigma: 0.6, decay: 0.9}
+test_meshes: [[bumpy_sphere, 64], [bumpy_sphere, 128], [delaunay_sphere, 64], [delaunay_sphere, 128],
+              [grid_sphere, 128], [grid_torus, 128], [bumpy_sphere, 256], [grid_torus, 256]]
+test_sources: 60
+patch_factors: [0.5, 1.0, 2.0]     # k = c * sqrt(N)
+repeats: 5                          # random starts per stochastic method (mean reported)
+spectral_max_n: 40000
