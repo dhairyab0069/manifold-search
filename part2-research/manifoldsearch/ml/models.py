@@ -8,6 +8,14 @@ import numpy as np
 N_CLASSES = 4
 
 
+def default_device() -> str:
+    """cuda only if this torch build has kernels for the card (the cluster env's torch 2.11+cu128 has none for V100, compute capability 7.0)."""
+    import torch
+    if torch.cuda.is_available() and torch.cuda.get_device_capability() >= (7, 5):
+        return "cuda"
+    return "cpu"
+
+
 def policy_from_proba(proba: np.ndarray, tau: float) -> np.ndarray:
     cum = np.cumsum(proba, axis=1)
     ok = cum >= tau - 1e-12
@@ -41,7 +49,7 @@ class MLPModel:
     def __init__(self, seed: int = 0, hidden: int = 64, epochs: int = 30, lr: float = 2e-3, device: str | None = None):
         import torch
         self.torch, self.seed, self.hidden, self.epochs, self.lr = torch, seed, hidden, epochs, lr
-        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = device or default_device()
 
     def fit(self, x, y):
         torch = self.torch
