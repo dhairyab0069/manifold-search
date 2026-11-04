@@ -1,0 +1,7 @@
+numpy>=1.26
+scipy>=1.11
+torch>=2.1
+pyyaml>=6
+# tests
+pytest>=8
+networkx>=3
