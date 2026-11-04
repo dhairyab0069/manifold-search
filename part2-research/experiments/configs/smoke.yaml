@@ -1,0 +1,8 @@
+# Seconds on a laptop CPU: checks that everything runs end to end.
+families: [grid_sphere, grid_torus, bumpy_sphere, delaunay_sphere]
+sizes: [8, 16]
+queries: 20
+patches_per_sqrt: 1.0
+corridor_rings: 0
+effort: true
+seed: 0
