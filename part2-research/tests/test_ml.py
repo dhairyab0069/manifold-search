@@ -33,7 +33,7 @@ def test_train_test_split_is_by_mesh_and_family():
 
 def test_policy_threshold_and_mix_curve_behave():
     proba = np.array([[0.9, 0.1, 0, 0], [0.2, 0.5, 0.3, 0.0]])
-    assert policy_from_proba(proba, 0.8).tolist() == [0, 2] and policy_from_proba(proba, 0.99).tolist() == [1, 3]
+    assert policy_from_proba(proba, 0.8).tolist() == [0, 2] and policy_from_proba(proba, 0.99).tolist() == [1, 2]
     cost = np.tile(np.arange(4.0), (100, 1)); stretch = np.tile([1.1, 1.05, 1.02, 1.0], (100, 1))
     curve = mix_curve(cost, stretch)
     assert abs(at_equal_cost(curve, 0.5)["mean"] - 1.075) < 0.02
