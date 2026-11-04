@@ -1,0 +1,11 @@
+# Direction 3: learned A* heuristic (distance to the target) against straight-line A*, ALT landmarks, weighted A* and Dijkstra.
+# Trained on small grid spheres/tori; tested on meshes the network never saw. Vertices expanded and path suboptimality are measured.
+train_meshes: [[grid_sphere, 32], [grid_sphere, 48], [grid_torus, 32], [grid_torus, 48], [grid_sphere, 64], [grid_torus, 64]]
+train_targets: 60
+train_vertices_per_target: 3000
+landmarks: 8
+over_weights: [1, 4, 16, 64]       # penalty on overestimates relative to underestimates in the training loss
+epochs: 8
+weights: [1.1, 1.25]               # weighted A*: h multiplied by w (cost at most w times optimal for an admissible h)
+test_meshes: [[bumpy_sphere, 64], [bumpy_sphere, 96], [delaunay_sphere, 64], [delaunay_sphere, 96], [grid_sphere, 96], [grid_torus, 96]]
+queries: 100
