@@ -16,6 +16,7 @@ from scipy.sparse.csgraph import dijkstra
 
 from .dataset import FAMILIES
 from .geometry import vertex_geometry
+from .models import default_device
 from .heuristic import HeuristicNet, MeshGeo, alt_bounds, astar_with_h, landmarks_graph_fps, pair_features
 
 _STATE: dict = {}
@@ -82,7 +83,7 @@ def main() -> None:
     args = ap.parse_args()
     cfg = yaml.safe_load(open(args.config))
     seed = args.seed
-    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    dev = default_device()
     nets, fit_s = {}, {}
     for kind in ("geo", "lm"):
         x, e, lb, ub, y, dg = training_data(cfg, seed, kind)
