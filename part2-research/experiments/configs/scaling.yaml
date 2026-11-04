@@ -1,8 +1,8 @@
 # How do speed and stretch change as the mesh grows? Exact distances from the GPU batch solver.
-# A size n means an n x 2n grid (about 2n^2 vertices): the largest below is about 8 million.
+# A size n means an n x 2n grid (about 2n^2 vertices): the largest here, 1024, is about 2 million.
 families: [grid_sphere, grid_torus, bumpy_sphere, delaunay_sphere]
-sizes: [32, 64, 128, 256, 512, 1024, 2048]
-queries: 200
+sizes: [32, 64, 128, 256, 512, 1024]
+queries: 100
 patches_per_sqrt: 1.0
 corridor_rings: 0
 gpu_truth: true

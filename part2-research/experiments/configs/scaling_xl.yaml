@@ -1,0 +1,9 @@
+# One size up: n = 2048 is about 8 million vertices. Run only after scaling.yaml has finished cleanly.
+# The random-point sphere is left out here: triangulating 8 million random points is slow and memory hungry.
+families: [grid_sphere, grid_torus, bumpy_sphere]
+sizes: [2048]
+queries: 40
+patches_per_sqrt: 1.0
+corridor_rings: 0
+gpu_truth: true
+seed: 0
